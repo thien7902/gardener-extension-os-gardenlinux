@@ -7,8 +7,8 @@ ENSURE_GARDENER_TOOLS_MOD   := $(shell go get github.com/gardener/gardener/hack/
 GARDENER_HACK_DIR           := $(shell go list -m -f "{{.Dir}}" github.com/gardener/gardener)/hack
 EXTENSION_PREFIX            := gardener-extension
 NAME                        := os-gardenlinux
-REGISTRY                    := europe-docker.pkg.dev/gardener-project/public
-IMAGE_PREFIX                := $(REGISTRY)/gardener/extensions
+REGISTRY                    := registry.fke.fptcloud.com
+IMAGE_PREFIX                := $(REGISTRY)/762c8029-26d9-4bea-b461-989ee4d4890f
 REPO_ROOT                   := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 HACK_DIR                    := $(REPO_ROOT)/hack
 VERSION                     := $(shell cat "$(REPO_ROOT)/VERSION")
@@ -48,7 +48,7 @@ install:
 
 .PHONY: docker-login
 docker-login:
-	@gcloud auth activate-service-account --key-file .kube-secrets/gcr/gcr-readwrite.json
+	@docker login registry.fke.fptcloud.com
 
 .PHONY: docker-images
 docker-images:
@@ -59,6 +59,11 @@ docker-images:
 		-m 6g \
 		--target $(EXTENSION_PREFIX)-$(NAME) \
 		.
+
+.PHONY: docker-push
+docker-push:
+	@docker push $(IMAGE_PREFIX)/$(NAME):$(VERSION)
+	@docker push $(IMAGE_PREFIX)/$(NAME):latest
 
 #####################################################################
 # Rules for verification, formatting, linting, testing and cleaning #

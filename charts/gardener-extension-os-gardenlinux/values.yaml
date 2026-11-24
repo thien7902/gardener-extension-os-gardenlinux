@@ -1,7 +1,11 @@
 image:
-  repository: europe-docker.pkg.dev/gardener-project/public/gardener/extensions/os-gardenlinux
+  repository: registry.fke.fptcloud.com/762c8029-26d9-4bea-b461-989ee4d4890f/os-gardenlinux
   tag: latest
   pullPolicy: IfNotPresent
+
+# names of secrets of type kubernetes.io/dockerconfigjson used for pulling the image from a private registry
+imagePullSecrets:
+- regcred
 
 resources: {}
 

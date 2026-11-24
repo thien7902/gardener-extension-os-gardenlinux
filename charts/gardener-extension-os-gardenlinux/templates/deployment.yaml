@@ -32,6 +32,12 @@ spec:
     spec:
       priorityClassName: gardener-system-900
       serviceAccountName: gardener-extension-os-gardenlinux
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+      {{- range .Values.imagePullSecrets }}
+      - name: {{ . }}
+      {{- end }}
+      {{- end }}
       containers:
       - name: gardener-extension-os-gardenlinux
         image: {{ include "image" . }}

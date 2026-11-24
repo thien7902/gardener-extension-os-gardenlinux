@@ -27,7 +27,7 @@ const (
 	PathEtcSetupHook = "/var/lib/gardenlinux/etc-setup-hooks/00-gardener"
 
 	// OSTypeGardenLinux is a constant for the Garden Linux extension OS type.
-	OSTypeGardenLinux = "gardenlinux"
+	OSTypeGardenLinux = "mfke-linux"
 
 	// OSTypeGardenLinux is a constant for the FIPS-enabled Garden Linux extension OS type.
 	OSTypeGardenLinuxFips = "gardenlinux-fips"
