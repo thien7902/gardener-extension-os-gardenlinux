@@ -231,6 +231,18 @@ LimitNOFILE=1048576`,
 				},
 			},
 		},
+		// Delay gardener-node-agent's restart after OSC reconciliation so that its first reconcile
+		// pass happens after the node has become Ready and the NotReady taint is already removed.
+		{
+			Name: nodeagentconfigv1alpha1.UnitName,
+			DropIns: []extensionsv1alpha1.DropIn{
+				{
+					Name: "10-delay-start.conf",
+					Content: `[Service]
+ExecStartPre=/bin/sleep 10`,
+				},
+			},
+		},
 	}
 
 	if osc.Spec.InPlaceUpdates != nil {

@@ -287,10 +287,10 @@ Content-Type: text/x-shellscript
 				})
 			})
 
-			It("should add one empty additional unit for containerd", func() {
+			It("should add one empty additional unit for containerd and a drop-in delaying gardener-node-agent", func() {
 				_, units, files, _, err := actuator.Reconcile(ctx, log, osc)
 				Expect(err).NotTo(HaveOccurred())
-				Expect(units).To(HaveLen(1))
+				Expect(units).To(HaveLen(2))
 				Expect(units).To(ContainElement(
 					extensionsv1alpha1.Unit{
 						Name: "containerd.service",
@@ -300,6 +300,18 @@ Content-Type: text/x-shellscript
 								Content: `[Service]
 LimitMEMLOCK=67108864
 LimitNOFILE=1048576`,
+							},
+						},
+					},
+				))
+				Expect(units).To(ContainElement(
+					extensionsv1alpha1.Unit{
+						Name: "gardener-node-agent.service",
+						DropIns: []extensionsv1alpha1.DropIn{
+							{
+								Name: "10-delay-start.conf",
+								Content: `[Service]
+ExecStartPre=/bin/sleep 10`,
 							},
 						},
 					},
